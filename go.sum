@@ -1,0 +1,10 @@
+github.com/12end/requests v0.0.0-20220812154132-96dd3bccc9b5 h1:inzfmff6o8F7HkVXNFi8y92zwsakl6S7V0131HjBsbs=
+github.com/12end/requests v0.0.0-20220812154132-96dd3bccc9b5/go.mod h1:FIXIiKQPAuw72awICzw2UUvA9sNOYY9yrGw1yz6/LXQ=
+github.com/12end/requests v0.0.0-20220812160231-058bfeb4b3a1 h1:zz0vy/rV+nb8IbUA9fy2NHCxtYi1ZwGc6kE6bCpVWGc=
+github.com/12end/requests v0.0.0-20220812160231-058bfeb4b3a1/go.mod h1:FIXIiKQPAuw72awICzw2UUvA9sNOYY9yrGw1yz6/LXQ=
+github.com/12end/requests v0.0.0-20220814024128-5fab9cf698ee h1:xMH5M7mQQlbeG8dVe4sXc++PZMXU3XYUutBUdhSJFNg=
+github.com/12end/requests v0.0.0-20220814024128-5fab9cf698ee/go.mod h1:FIXIiKQPAuw72awICzw2UUvA9sNOYY9yrGw1yz6/LXQ=
+golang.org/x/net v0.0.0-20220811182439-13a9a731de15 h1:cik0bxZUSJVDyaHf1hZPSDsU8SZHGQZQMeueXCE7yBQ=
+golang.org/x/net v0.0.0-20220811182439-13a9a731de15/go.mod h1:YDH+HFinaLZZlnHAfSS6ZXJJ9M9t4Dl22yv3iI2vPwk=
+golang.org/x/text v0.3.7 h1:olpwvP2KacW1ZWvsR7uQhoyTYvKAupfQrRGBFM352Gk=
+golang.org/x/text v0.3.7/go.mod h1:u+2+/6zg+i71rQMx5EYifcz6MCKuco9NR6JIITiCfzQ=
