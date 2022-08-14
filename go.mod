@@ -1,4 +1,4 @@
-module pocRegistry
+module github.com/12end/pocRegistry
 
 go 1.18
 
