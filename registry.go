@@ -111,6 +111,7 @@ func (r Registry) ExecutePOCWithTrace(target *url.URL, productName string, pocNa
 }
 
 func (r Registry) ExecutePOCs(target *url.URL, productName string) (result map[string]bool) {
+	result = map[string]bool{}
 	if _, ok := r.pocs[productName]; ok {
 		for pocName, poc := range r.pocs[productName] {
 			if vulnerable, _ := r.check(poc, target, false); vulnerable {
