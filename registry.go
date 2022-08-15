@@ -1,7 +1,6 @@
 package pocRegistry
 
 import (
-	"errors"
 	"fmt"
 	"github.com/12end/requests"
 	"go.uber.org/zap"
@@ -71,37 +70,37 @@ func (r Registry) Unset(pocName string) {
 	}
 }
 
-func (r Registry) ExecutePOC(target *url.URL, productName string, pocName string) (vulnerable bool, err error) {
+func (r Registry) ExecutePOC(target *url.URL, productName string, pocName string) (vulnerable bool) {
 	if _, ok := r.pocs[productName]; ok {
 		if poc, ok := r.pocs[productName][pocName]; ok {
 			vulnerable, _ = poc.Check(target, false)
 			return
 		} else {
-			err = errors.New(fmt.Sprintf("No such poc(%s) in product: %s", pocName, productName))
-			return false, err
+			r.Logger.Error(fmt.Sprintf("No such poc(%s) in product: %s", pocName, productName))
+			return false
 		}
 	} else {
-		err = errors.New(fmt.Sprintf("No such product: %s", productName))
-		return false, err
+		r.Logger.Error(fmt.Sprintf("No such product: %s", productName))
+		return false
 	}
 }
 
-func (r Registry) ExecutePOCWithTrace(target *url.URL, productName string, pocName string) (vulnerable bool, trace []requests.TraceInfo, err error) {
+func (r Registry) ExecutePOCWithTrace(target *url.URL, productName string, pocName string) (vulnerable bool, trace []requests.TraceInfo) {
 	if _, ok := r.pocs[productName]; ok {
 		if poc, ok := r.pocs[productName][pocName]; ok {
 			vulnerable, trace = poc.Check(target, true)
 			return
 		} else {
-			err = errors.New(fmt.Sprintf("No such poc(%s) in product: %s", pocName, productName))
-			return false, nil, err
+			r.Logger.Error(fmt.Sprintf("No such poc(%s) in product: %s", pocName, productName))
+			return false, nil
 		}
 	} else {
-		err = errors.New(fmt.Sprintf("No such product: %s", productName))
-		return false, nil, err
+		r.Logger.Error(fmt.Sprintf("No such product: %s", productName))
+		return false, nil
 	}
 }
 
-func (r Registry) ExecutePOCs(target *url.URL, productName string) (result map[string]bool, err error) {
+func (r Registry) ExecutePOCs(target *url.URL, productName string) (result map[string]bool) {
 	if _, ok := r.pocs[productName]; ok {
 		for pocName, poc := range r.pocs[productName] {
 			if vulnerable, _ := poc.Check(target, false); vulnerable {
@@ -110,12 +109,12 @@ func (r Registry) ExecutePOCs(target *url.URL, productName string) (result map[s
 		}
 		return
 	} else {
-		err = errors.New(fmt.Sprintf("No such product: %s", productName))
-		return nil, err
+		r.Logger.Error(fmt.Sprintf("No such product: %s", productName))
+		return
 	}
 }
 
-func (r Registry) ExecutePOCsWithTrace(target *url.URL, productName string) (result map[string][]requests.TraceInfo, err error) {
+func (r Registry) ExecutePOCsWithTrace(target *url.URL, productName string) (result map[string][]requests.TraceInfo) {
 	if _, ok := r.pocs[productName]; ok {
 		for pocName, poc := range r.pocs[productName] {
 			vulnerable, trace := poc.Check(target, true)
@@ -125,7 +124,7 @@ func (r Registry) ExecutePOCsWithTrace(target *url.URL, productName string) (res
 		}
 		return
 	} else {
-		err = errors.New(fmt.Sprintf("No such product: %s", productName))
-		return nil, err
+		r.Logger.Error(fmt.Sprintf("No such product: %s", productName))
+		return
 	}
 }
