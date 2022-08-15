@@ -9,7 +9,7 @@ import (
 
 type Registry struct {
 	// map[productName][vulName]
-	pocs     map[string]map[string]POC
+	Pocs     map[string]map[string]POC
 	logLevel *zap.AtomicLevel
 	Logger   *zap.Logger
 }
@@ -34,7 +34,7 @@ func NewRegistry() Registry {
 	if err != nil {
 		fmt.Println(err)
 	}
-	return Registry{pocs: map[string]map[string]POC{}, logLevel: &level, Logger: log}
+	return Registry{Pocs: map[string]map[string]POC{}, logLevel: &level, Logger: log}
 }
 
 func (r Registry) SetLogLevel(level zapcore.Level) {
@@ -43,12 +43,12 @@ func (r Registry) SetLogLevel(level zapcore.Level) {
 
 func (r Registry) Register(p POC) {
 	product := p.ProductName
-	if _, ok := r.pocs[product]; !ok {
-		r.pocs[product] = map[string]POC{
+	if _, ok := r.Pocs[product]; !ok {
+		r.Pocs[product] = map[string]POC{
 			p.Name: p,
 		}
 	} else {
-		r.pocs[product][p.Name] = p
+		r.Pocs[product][p.Name] = p
 	}
 }
 
@@ -58,12 +58,12 @@ func (r Registry) Unset(pocName string) {
 	arr := strings.SplitN(pocName, "/", 2)
 	if len(arr) == 1 {
 		productName := arr[0]
-		delete(r.pocs, productName)
+		delete(r.Pocs, productName)
 	} else {
 		productName := arr[0]
 		pocName := arr[1]
-		if _, ok := r.pocs[productName]; ok {
-			delete(r.pocs[productName], pocName)
+		if _, ok := r.Pocs[productName]; ok {
+			delete(r.Pocs[productName], pocName)
 		}
 	}
 }

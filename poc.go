@@ -42,8 +42,8 @@ func (r Registry) check(poc POC, target *url.URL, trace bool, args []string) (vu
 }
 
 func (r Registry) ExecutePOC(target *url.URL, productName string, pocName string, args []string) (vulnerable bool) {
-	if _, ok := r.pocs[productName]; ok {
-		if poc, ok := r.pocs[productName][pocName]; ok {
+	if _, ok := r.Pocs[productName]; ok {
+		if poc, ok := r.Pocs[productName][pocName]; ok {
 			vulnerable, _ = r.check(poc, target, false, args)
 			return
 		} else {
@@ -57,8 +57,8 @@ func (r Registry) ExecutePOC(target *url.URL, productName string, pocName string
 }
 
 func (r Registry) ExecutePOCWithTrace(target *url.URL, productName string, pocName string, args []string) (vulnerable bool, trace []requests.TraceInfo) {
-	if _, ok := r.pocs[productName]; ok {
-		if poc, ok := r.pocs[productName][pocName]; ok {
+	if _, ok := r.Pocs[productName]; ok {
+		if poc, ok := r.Pocs[productName][pocName]; ok {
 			vulnerable, trace = r.check(poc, target, true, args)
 			return
 		} else {
@@ -73,8 +73,8 @@ func (r Registry) ExecutePOCWithTrace(target *url.URL, productName string, pocNa
 
 func (r Registry) ExecutePOCs(target *url.URL, productName string, args []string) (result map[string]bool) {
 	result = map[string]bool{}
-	if _, ok := r.pocs[productName]; ok {
-		for pocName, poc := range r.pocs[productName] {
+	if _, ok := r.Pocs[productName]; ok {
+		for pocName, poc := range r.Pocs[productName] {
 			if vulnerable, _ := r.check(poc, target, false, args); vulnerable {
 				result[pocName] = true
 			}
@@ -88,8 +88,8 @@ func (r Registry) ExecutePOCs(target *url.URL, productName string, args []string
 
 func (r Registry) ExecutePOCsWithTrace(target *url.URL, productName string, args []string) (result map[string][]requests.TraceInfo) {
 	result = map[string][]requests.TraceInfo{}
-	if _, ok := r.pocs[productName]; ok {
-		for pocName, poc := range r.pocs[productName] {
+	if _, ok := r.Pocs[productName]; ok {
+		for pocName, poc := range r.Pocs[productName] {
 			vulnerable, trace := r.check(poc, target, true, args)
 			if vulnerable {
 				result[pocName] = trace
