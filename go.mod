@@ -3,7 +3,7 @@ module github.com/12end/pocRegistry
 go 1.18
 
 require (
-	github.com/12end/requests v0.0.0-20220814024128-5fab9cf698ee
+	github.com/12end/requests v0.0.0-20220815035042-dd88f1cbc1c8
 	go.uber.org/zap v1.22.0
 )
 
