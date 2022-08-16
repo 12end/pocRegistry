@@ -71,12 +71,12 @@ func (r Registry) ExecutePOCWithTrace(target *url.URL, productName string, pocNa
 	}
 }
 
-func (r Registry) ExecutePOCs(target *url.URL, productName string, args []string) (result map[string]bool) {
-	result = map[string]bool{}
+func (r Registry) ExecutePOCs(target *url.URL, productName string, args []string) (result map[string]string) {
+	result = map[string]string{}
 	if _, ok := r.Pocs[productName]; ok {
 		for pocName, poc := range r.Pocs[productName] {
 			if vulnerable, _ := r.check(poc, target, false, args); vulnerable {
-				result[pocName] = true
+				result[pocName] = poc.Alias
 			}
 		}
 		return
@@ -86,13 +86,15 @@ func (r Registry) ExecutePOCs(target *url.URL, productName string, args []string
 	}
 }
 
-func (r Registry) ExecutePOCsWithTrace(target *url.URL, productName string, args []string) (result map[string][]requests.TraceInfo) {
+func (r Registry) ExecutePOCsWithTrace(target *url.URL, productName string, args []string) (result map[string][]requests.TraceInfo, aliases map[string]string) {
 	result = map[string][]requests.TraceInfo{}
+	aliases = map[string]string{}
 	if _, ok := r.Pocs[productName]; ok {
 		for pocName, poc := range r.Pocs[productName] {
 			vulnerable, trace := r.check(poc, target, true, args)
 			if vulnerable {
 				result[pocName] = trace
+				aliases[pocName] = poc.Alias
 			}
 		}
 		return
