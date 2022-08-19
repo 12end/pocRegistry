@@ -42,10 +42,10 @@ func (r Registry) SetLogLevel(level zapcore.Level) {
 }
 
 func (r Registry) Register(p POC) {
-	product := p.ProductName
+	product := strings.ToLower(p.ProductName)
 	if _, ok := r.Pocs[product]; !ok {
 		r.Pocs[product] = map[string]POC{
-			p.Name: p,
+			strings.ToLower(p.Name): p,
 		}
 	} else {
 		r.Pocs[product][p.Name] = p
@@ -55,7 +55,7 @@ func (r Registry) Register(p POC) {
 func (r Registry) Unset(pocName string) {
 	// productName = arr[0]
 	// pocName = arr[1]
-	arr := strings.SplitN(pocName, "/", 2)
+	arr := strings.SplitN(strings.ToLower(pocName), "/", 2)
 	if len(arr) == 1 {
 		productName := arr[0]
 		delete(r.Pocs, productName)
@@ -66,4 +66,10 @@ func (r Registry) Unset(pocName string) {
 			delete(r.Pocs[productName], pocName)
 		}
 	}
+}
+
+func (r Registry) ExistsProduct(productName string) bool {
+	productName = strings.ToLower(productName)
+	_, ok := r.Pocs[productName]
+	return ok
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/12end/pocRegistry/cli"
 	"github.com/12end/requests"
 	"net/url"
+	"strings"
 )
 
 type POC struct {
@@ -42,8 +43,10 @@ func (r Registry) check(poc POC, target *url.URL, trace bool, args []string) (vu
 }
 
 func (r Registry) ExecutePOC(target *url.URL, productName string, pocName string, args []string) (vulnerable bool) {
-	if _, ok := r.Pocs[productName]; ok {
-		if poc, ok := r.Pocs[productName][pocName]; ok {
+	productName_ := strings.ToLower(productName)
+	pocName_ := strings.ToLower(pocName)
+	if _, ok := r.Pocs[productName_]; ok {
+		if poc, ok := r.Pocs[productName_][pocName_]; ok {
 			vulnerable, _ = r.check(poc, target, false, args)
 			return
 		} else {
@@ -57,8 +60,10 @@ func (r Registry) ExecutePOC(target *url.URL, productName string, pocName string
 }
 
 func (r Registry) ExecutePOCWithTrace(target *url.URL, productName string, pocName string, args []string) (vulnerable bool, trace []requests.TraceInfo) {
-	if _, ok := r.Pocs[productName]; ok {
-		if poc, ok := r.Pocs[productName][pocName]; ok {
+	productName_ := strings.ToLower(productName)
+	pocName_ := strings.ToLower(pocName)
+	if _, ok := r.Pocs[productName_]; ok {
+		if poc, ok := r.Pocs[productName_][pocName_]; ok {
 			vulnerable, trace = r.check(poc, target, true, args)
 			return
 		} else {
@@ -72,9 +77,10 @@ func (r Registry) ExecutePOCWithTrace(target *url.URL, productName string, pocNa
 }
 
 func (r Registry) ExecutePOCs(target *url.URL, productName string, args []string) (result map[string]string) {
+	productName_ := strings.ToLower(productName)
 	result = map[string]string{}
-	if _, ok := r.Pocs[productName]; ok {
-		for pocName, poc := range r.Pocs[productName] {
+	if _, ok := r.Pocs[productName_]; ok {
+		for pocName, poc := range r.Pocs[productName_] {
 			if vulnerable, _ := r.check(poc, target, false, args); vulnerable {
 				result[pocName] = poc.Alias
 			}
@@ -89,8 +95,9 @@ func (r Registry) ExecutePOCs(target *url.URL, productName string, args []string
 func (r Registry) ExecutePOCsWithTrace(target *url.URL, productName string, args []string) (result map[string][]requests.TraceInfo, aliases map[string]string) {
 	result = map[string][]requests.TraceInfo{}
 	aliases = map[string]string{}
-	if _, ok := r.Pocs[productName]; ok {
-		for pocName, poc := range r.Pocs[productName] {
+	productName_ := strings.ToLower(productName)
+	if _, ok := r.Pocs[productName_]; ok {
+		for pocName, poc := range r.Pocs[productName_] {
 			vulnerable, trace := r.check(poc, target, true, args)
 			if vulnerable {
 				result[pocName] = trace
