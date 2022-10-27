@@ -48,7 +48,7 @@ func (r Registry) Register(p POC) {
 			strings.ToLower(p.Name): p,
 		}
 	} else {
-		r.Pocs[product][p.Name] = p
+		r.Pocs[product][strings.ToLower(p.Name)] = p
 	}
 }
 
