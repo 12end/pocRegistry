@@ -7,12 +7,14 @@ import (
 	"math/rand"
 	"net/url"
 	"path"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
 )
 
 var randSource = rand.New(rand.NewSource(time.Now().Unix()))
+var etcpasswdReg = regexp.MustCompile("((root|bin|daemon|sys|sync|games|man|mail|news|www-data|uucp|backup|list|proxy|gnats|nobody|syslog|mysql|bind|ftp|sshd|postfix):[\\d\\w\\-\\s,]+:\\d+:\\d+:[\\w\\-_\\s,]*:[\\w\\-_\\s,\\/]*:[\\w\\-_,\\/]*[\\r\\n])")
 
 func RandomLowercase(n int) string {
 	lowercase := "abcdefghijklmnopqrstuvwxyz"
@@ -97,4 +99,8 @@ func UrlString(u *url.URL) string {
 
 func UrlRoot(u *url.URL) string {
 	return fmt.Sprintf("%s://%s", u.Scheme, u.Host)
+}
+
+func MatchEtcPasswd(content string) bool {
+	return etcpasswdReg.MatchString(content)
 }
